@@ -39,7 +39,6 @@ repositories {
     mavenCentral()
 }
 
-
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("stdlib-common"))
@@ -56,6 +55,18 @@ configurations.all {
     resolutionStrategy {
         preferProjectModules()
     }
+}
+
+project.tasks.named("dependencyLicenses") {
+    enabled = false
+}
+
+project.tasks.named("loggerUsageCheck") {
+    enabled = false
+}
+
+project.tasks.named("validateNebulaPom") {
+    enabled = false
 }
 
 tasks.test {
