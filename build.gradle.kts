@@ -1,8 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.opensearch.gradle.testclusters.OpenSearchCluster
 
 buildscript {
-    val opensearchVersion = System.getProperty("opensearch.version", "1.0.0-rc1")
+    val openSearchVersion = Versions.getOpenSearchVersion()
 
     repositories {
         mavenLocal()
@@ -10,15 +9,15 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.opensearch.gradle:build-tools:${opensearchVersion}")
+        classpath("org.opensearch.gradle:build-tools:${openSearchVersion}")
     }
 }
 
 group = "com.example"
-version = "1.0.0-SNAPSHOT"
+version = Versions.getVersion()
 
 plugins {
-    kotlin("jvm") version "1.4.30"
+    kotlin("jvm") version Versions.kotlinVersion
     java
     idea
 }
@@ -40,14 +39,13 @@ repositories {
     mavenCentral()
 }
 
-val kotlinVersion = "1.4.30"
-val opensearchVersion = "1.0.0-rc1"
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${kotlinVersion}")
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("stdlib-common"))
 
-    implementation("org.opensearch:opensearch:${opensearchVersion}")
+    val openSearchVersion = Versions.getOpenSearchVersion()
+    implementation("org.opensearch:opensearch:${openSearchVersion}")
 
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
@@ -64,6 +62,6 @@ tasks.test {
     useJUnitPlatform()
 }
 
-tasks.withType<KotlinCompile>() {
+tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "11"
 }
