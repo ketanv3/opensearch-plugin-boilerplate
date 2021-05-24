@@ -14,7 +14,7 @@ cd OpenSearch
 git checkout 1.0.0-rc1
 
 # Publish the build artifacts to local maven repository.
-./gradlew publishToMavenLocal -Dbuild.version_qualifier=beta1 -Dbuild.snapshot=false
+./gradlew publishToMavenLocal -Dbuild.version_qualifier=rc1 -Dbuild.snapshot=false
 ```
 
 ### Building, Testing and Running the Plugin
