@@ -14,12 +14,15 @@
 hs_err_pid*
 
 # IntelliJ files
-.idea
+.idea/*
 *.iml
 *.ipr
 *.iws
 build-idea/
 out/
+
+# Include Copyright template for IntelliJ
+!.idea/copyright
 
 # Gradle files
 .gradle

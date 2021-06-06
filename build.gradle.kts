@@ -1,3 +1,14 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.opensearch.gradle.testclusters.OpenSearchCluster
 import org.opensearch.gradle.testclusters.RunTask
@@ -33,7 +44,7 @@ apply(plugin = "opensearch.internal-cluster-test")
 
 configure<org.opensearch.gradle.plugin.PluginPropertiesExtension> {
     name = "example-opensearch-plugin"
-    description = "OpenSearch plugin boilerplate written in Kotlin"
+    description = "OpenSearch plugin template written in Kotlin"
     classname = "com.example.ExamplePlugin"
     noticeFile = rootProject.file("NOTICE")
     licenseFile = rootProject.file("LICENSE")
@@ -63,7 +74,7 @@ configurations.all {
 }
 
 project.tasks.named("licenseHeaders") {
-    enabled = false
+    enabled = true
 }
 
 project.tasks.named("dependencyLicenses") {

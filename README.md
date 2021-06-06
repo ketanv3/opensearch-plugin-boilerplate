@@ -1,5 +1,5 @@
-# opensearch-plugin-boilerplate
-OpenSearch plugin boilerplate written in Kotlin.
+# opensearch-plugin-template-kotlin
+OpenSearch plugin template written in Kotlin.
 
 Until OpenSearch and other artifacts are published to Maven Central [OpenSearch#581](https://github.com/opensearch-project/OpenSearch/issues/581), plugins may require building all their dependencies and publishing them to Maven local.
 
