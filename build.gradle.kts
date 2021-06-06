@@ -28,6 +28,8 @@ plugins {
 apply(plugin = "opensearch.opensearchplugin")
 apply(plugin = "opensearch.testclusters")
 apply(plugin = "opensearch.rest-test")
+apply(plugin = "opensearch.yaml-rest-test")
+apply(plugin = "opensearch.internal-cluster-test")
 
 configure<org.opensearch.gradle.plugin.PluginPropertiesExtension> {
     name = "example-opensearch-plugin"
@@ -60,6 +62,10 @@ configurations.all {
     }
 }
 
+project.tasks.named("licenseHeaders") {
+    enabled = false
+}
+
 project.tasks.named("dependencyLicenses") {
     enabled = false
 }
@@ -76,16 +82,26 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "11"
 }
 
-// Temporary workaround for https://github.com/opensearch-project/OpenSearch/issues/766
-// This will ensure test clusters launched with 'run' and 'integTest' tasks have the plugin pre-installed.
+/**
+ * Temporary workaround for - https://github.com/opensearch-project/OpenSearch/issues/766
+ * Due to a bug, the 'run' task doesn't launch a test cluster. Moreover, the test cluster launched by the
+ * 'integTest' task doesn't have the plugin pre-installed.
+ *
+ * Workaround:
+ * 1. Manually create a test cluster for the 'run' task.
+ * 2. Manually install the bundled plugin zip in the test clusters 'run' and 'integTest' tasks.
+ */
+
 val bundlePlugin: Zip = project.tasks.named<Zip>("bundlePlugin").get()
 val testClusters = project.extensions.getByName<NamedDomainObjectContainer<OpenSearchCluster>>(TestClustersPlugin.EXTENSION_NAME)
 
-// Create a new test cluster for the 'run' task, then install the bundled plugin zip on all test clusters.
 testClusters.create("runTask")
-testClusters.forEach { cluster -> cluster.plugin(bundlePlugin.archiveFile) }
+testClusters["runTask"].plugin(bundlePlugin.archiveFile)
+testClusters["integTest"].plugin(bundlePlugin.archiveFile)
 
-// Update the 'run' task to use the newly created test cluster.
+// Installing the plugin on every test cluster is not recommended but can be done by uncommenting this line:
+// testClusters.forEach { cluster -> cluster.plugin(bundlePlugin.archiveFile) }
+
 project.tasks.named<RunTask>("run") {
     useCluster(testClusters["runTask"])
 }
