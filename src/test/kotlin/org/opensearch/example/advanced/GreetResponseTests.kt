@@ -9,7 +9,7 @@
  * GitHub history for details.
  */
 
-package com.example.advanced
+package org.opensearch.example.advanced
 
 import org.opensearch.common.io.stream.Writeable
 import org.opensearch.common.xcontent.XContentParser

@@ -9,7 +9,7 @@
  * GitHub history for details.
  */
 
-package com.example.integTest
+package org.opensearch.example.integTest
 
 import org.apache.http.util.EntityUtils
 import org.hamcrest.Matchers.containsString

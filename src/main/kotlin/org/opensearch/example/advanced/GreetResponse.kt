@@ -9,10 +9,9 @@
  * GitHub history for details.
  */
 
-package com.example.advanced
+package org.opensearch.example.advanced
 
-import org.opensearch.action.ActionRequest
-import org.opensearch.action.ActionRequestValidationException
+import org.opensearch.action.ActionResponse
 import org.opensearch.common.ParseField
 import org.opensearch.common.io.stream.StreamInput
 import org.opensearch.common.io.stream.StreamOutput
@@ -24,56 +23,36 @@ import org.opensearch.common.xcontent.XContentBuilder
 import org.opensearch.common.xcontent.XContentParser
 import java.util.function.Function
 
-class GreetRequest: ActionRequest, ToXContentObject {
+class GreetResponse(val name: String): ActionResponse(), ToXContentObject {
 
     companion object {
-        private val NAME_FIELD = ParseField("name")
+        val GREET_FIELD = ParseField("hello")
 
-        private val PARSER = ConstructingObjectParser<GreetRequest, Void>(
-            "greet_request",
+        private val PARSER = ConstructingObjectParser<GreetResponse, Void>(
+            "greet_response",
             true,
-            Function { args -> GreetRequest(args[0] as String) }
+            Function { args -> GreetResponse(args[0] as String) }
         )
 
         init {
-            PARSER.declareString(constructorArg(), NAME_FIELD)
+            PARSER.declareString(constructorArg(), GREET_FIELD)
         }
 
-        fun fromXContent(parser: XContentParser): GreetRequest {
+        fun fromXContent(parser: XContentParser): GreetResponse {
             return PARSER.apply(parser, null)
         }
     }
 
-    val name: String
+    constructor(input: StreamInput) : this(input.readString())
 
-    constructor(name: String) {
-        this.name = name
-    }
-
-    constructor(input: StreamInput) : super(input) {
-        this.name = input.readString()
-    }
-
-    override fun validate(): ActionRequestValidationException? {
-        var errors: ActionRequestValidationException? = null
-
-        if (name.isBlank()) {
-            errors = ActionRequestValidationException()
-            errors.addValidationError("'name' cannot be blank")
-        }
-
-        return errors
-    }
-
-    override fun writeTo(out: StreamOutput) {
-        super.writeTo(out)
-        out.writeString(name)
+    override fun writeTo(output: StreamOutput) {
+        output.writeString(name)
     }
 
     override fun toXContent(builder: XContentBuilder, params: ToXContent.Params): XContentBuilder {
         return builder
             .startObject()
-            .field(NAME_FIELD.preferredName, name)
+            .field(GREET_FIELD.preferredName, name)
             .endObject()
     }
 
@@ -81,7 +60,7 @@ class GreetRequest: ActionRequest, ToXContentObject {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as GreetRequest
+        other as GreetResponse
 
         if (name != other.name) return false
 

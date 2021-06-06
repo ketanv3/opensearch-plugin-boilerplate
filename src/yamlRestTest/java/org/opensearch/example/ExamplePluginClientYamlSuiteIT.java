@@ -9,7 +9,7 @@
  * GitHub history for details.
  */
 
-package com.example;
+package org.opensearch.example;
 
 import com.carrotsearch.randomizedtesting.annotations.Name;
 import com.carrotsearch.randomizedtesting.annotations.ParametersFactory;

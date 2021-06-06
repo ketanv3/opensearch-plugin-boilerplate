@@ -9,10 +9,10 @@
  * GitHub history for details.
  */
 
-package com.example
+package org.opensearch.example
 
-import com.example.advanced.GreetAction
-import com.example.advanced.GreetRequest
+import org.opensearch.example.advanced.GreetAction
+import org.opensearch.example.advanced.GreetRequest
 import org.hamcrest.Matchers.equalTo
 import org.opensearch.test.OpenSearchIntegTestCase
 

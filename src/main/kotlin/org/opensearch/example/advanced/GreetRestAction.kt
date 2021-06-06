@@ -9,9 +9,9 @@
  * GitHub history for details.
  */
 
-package com.example.advanced
+package org.opensearch.example.advanced
 
-import com.example.ExamplePlugin
+import org.opensearch.example.ExamplePlugin
 import org.opensearch.client.node.NodeClient
 import org.opensearch.rest.BaseRestHandler
 import org.opensearch.rest.RestHandler

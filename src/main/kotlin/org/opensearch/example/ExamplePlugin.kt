@@ -9,10 +9,10 @@
  * GitHub history for details.
  */
 
-package com.example
+package org.opensearch.example
 
-import com.example.advanced.GreetAction
-import com.example.advanced.GreetTransportAction
+import org.opensearch.example.advanced.GreetAction
+import org.opensearch.example.advanced.GreetTransportAction
 import org.opensearch.cluster.metadata.IndexNameExpressionResolver
 import org.opensearch.cluster.node.DiscoveryNodes
 import org.opensearch.common.settings.ClusterSettings
@@ -39,8 +39,8 @@ class ExamplePlugin : Plugin(), ActionPlugin {
         indexNameExpressionResolver: IndexNameExpressionResolver?,
         nodesInCluster: Supplier<DiscoveryNodes>?
     ) = listOf(
-        com.example.simple.GreetRestAction(),
-        com.example.advanced.GreetRestAction()
+        org.opensearch.example.simple.GreetRestAction(),
+        org.opensearch.example.advanced.GreetRestAction()
     )
 
     override fun getActions() = listOf(

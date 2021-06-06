@@ -9,9 +9,9 @@
  * GitHub history for details.
  */
 
-package com.example.simple
+package org.opensearch.example.simple
 
-import com.example.ExamplePlugin.Companion.BASE_PATH
+import org.opensearch.example.ExamplePlugin.Companion.BASE_PATH
 import org.opensearch.client.node.NodeClient
 import org.opensearch.common.xcontent.json.JsonXContent
 import org.opensearch.rest.BaseRestHandler

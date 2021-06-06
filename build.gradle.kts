@@ -27,7 +27,7 @@ buildscript {
     }
 }
 
-group = "com.example"
+group = "org.opensearch.example"
 version = Versions.getVersion()
 
 plugins {
@@ -45,7 +45,7 @@ apply(plugin = "opensearch.internal-cluster-test")
 configure<org.opensearch.gradle.plugin.PluginPropertiesExtension> {
     name = "example-opensearch-plugin"
     description = "OpenSearch plugin template written in Kotlin"
-    classname = "com.example.ExamplePlugin"
+    classname = "org.opensearch.example.ExamplePlugin"
     noticeFile = rootProject.file("NOTICE")
     licenseFile = rootProject.file("LICENSE")
 }
