@@ -1,0 +1,41 @@
+name: Build and Test Plugin Workflow
+
+on:
+  push:
+    branches:
+      - main
+      - development
+  pull_request:
+    branches:
+      - main
+      - development
+
+jobs:
+  build:
+    name: Build and Test Plugin
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set-up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
+
+      # Until OpenSearch artifacts are publicly available, we need to manually build and publish the artifacts
+      # to local Maven repository.
+      - name: Checkout OpenSearch
+        uses: actions/checkout@v2
+        with:
+          repository: opensearch-project/OpenSearch
+          path: OpenSearch
+          ref: '1.0'
+
+      - name: Build OpenSearch
+        working-directory: ./OpenSearch
+        run: ./gradlew publishToMavenLocal -Dbuild.version_qualifier=rc1 -Dbuild.snapshot=false
+
+      - name: Checkout Plugin
+        uses: actions/checkout@v2
+
+      - name: Build Plugin
+        run: ./gradlew build -Dopensearch.version=1.0.0-rc1
