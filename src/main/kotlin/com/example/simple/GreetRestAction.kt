@@ -1,18 +1,22 @@
-package com.example.rest
+package com.example.simple
 
 import com.example.ExamplePlugin.Companion.BASE_PATH
 import org.opensearch.client.node.NodeClient
 import org.opensearch.common.xcontent.json.JsonXContent
-import org.opensearch.rest.*
+import org.opensearch.rest.BaseRestHandler
+import org.opensearch.rest.BytesRestResponse
+import org.opensearch.rest.RestHandler
+import org.opensearch.rest.RestRequest
+import org.opensearch.rest.RestStatus
 
-class RestGreetAction : BaseRestHandler() {
+class GreetRestAction : BaseRestHandler() {
 
     override fun routes() = listOf(
-        RestHandler.Route(RestRequest.Method.GET, "$BASE_PATH/greet"),
-        RestHandler.Route(RestRequest.Method.GET, "$BASE_PATH/greet/{name}")
+        RestHandler.Route(RestRequest.Method.GET, "$BASE_PATH/simple"),
+        RestHandler.Route(RestRequest.Method.GET, "$BASE_PATH/simple/{name}")
     )
 
-    override fun getName() = "greet_action"
+    override fun getName() = "simple_greet_action"
 
     override fun prepareRequest(request: RestRequest, client: NodeClient): RestChannelConsumer {
         val name = request.param("name", "anonymous")

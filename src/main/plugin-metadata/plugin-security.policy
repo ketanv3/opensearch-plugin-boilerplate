@@ -1,0 +1,3 @@
+grant {
+    // Define any additional permissions required by your plugin.
+};

@@ -1,6 +1,7 @@
 package com.example
 
-import com.example.rest.RestGreetAction
+import com.example.advanced.GreetAction
+import com.example.advanced.GreetTransportAction
 import org.opensearch.cluster.metadata.IndexNameExpressionResolver
 import org.opensearch.cluster.node.DiscoveryNodes
 import org.opensearch.common.settings.ClusterSettings
@@ -27,7 +28,12 @@ class ExamplePlugin : Plugin(), ActionPlugin {
         indexNameExpressionResolver: IndexNameExpressionResolver?,
         nodesInCluster: Supplier<DiscoveryNodes>?
     ) = listOf(
-        RestGreetAction()
+        com.example.simple.GreetRestAction(),
+        com.example.advanced.GreetRestAction()
+    )
+
+    override fun getActions() = listOf(
+        ActionPlugin.ActionHandler(GreetAction.INSTANCE, GreetTransportAction::class.java)
     )
 
 }
