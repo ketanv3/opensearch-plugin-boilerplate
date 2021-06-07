@@ -9,6 +9,8 @@
  * GitHub history for details.
  */
 
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.opensearch.gradle.testclusters.OpenSearchCluster
 import org.opensearch.gradle.testclusters.RunTask
@@ -87,6 +89,16 @@ tasks.named("validateNebulaPom") {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "11"
+}
+
+tasks.withType<Test> {
+    testLogging {
+        events(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED, TestLogEvent.STANDARD_ERROR)
+        exceptionFormat = TestExceptionFormat.FULL
+        showExceptions = true
+        showStackTraces = true
+        showCauses = true
+    }
 }
 
 /**
