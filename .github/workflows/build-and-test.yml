@@ -21,8 +21,7 @@ jobs:
         with:
           java-version: 14
 
-      # Until OpenSearch artifacts are publicly available, we need to manually build and publish the artifacts
-      # to local Maven repository.
+      # Build and publish artifacts to the local Maven repository until they are available on Maven central.
       - name: Checkout OpenSearch
         uses: actions/checkout@v2
         with:

@@ -61,10 +61,6 @@ dependencies {
 
     val openSearchVersion = Versions.getOpenSearchVersion()
     implementation("org.opensearch:opensearch:${openSearchVersion}")
-
-    testImplementation(kotlin("test-junit5"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
 }
 
 configurations.all {
@@ -73,19 +69,19 @@ configurations.all {
     }
 }
 
-project.tasks.named("licenseHeaders") {
+tasks.named("licenseHeaders") {
     enabled = true
 }
 
-project.tasks.named("dependencyLicenses") {
+tasks.named("dependencyLicenses") {
     enabled = false
 }
 
-project.tasks.named("loggerUsageCheck") {
+tasks.named("loggerUsageCheck") {
     enabled = false
 }
 
-project.tasks.named("validateNebulaPom") {
+tasks.named("validateNebulaPom") {
     enabled = false
 }
 
@@ -95,24 +91,18 @@ tasks.withType<KotlinCompile> {
 
 /**
  * Temporary workaround for - https://github.com/opensearch-project/OpenSearch/issues/766
- * Due to a bug, the 'run' task doesn't launch a test cluster. Moreover, the test cluster launched by the
- * 'integTest' task doesn't have the plugin pre-installed.
+ * 1. The 'run' task doesn't launch a test cluster.
+ * 2. The test cluster launched by the 'integTest' task doesn't have the plugin pre-installed.
  *
  * Workaround:
- * 1. Manually create a test cluster for the 'run' task.
- * 2. Manually install the bundled plugin zip in the test clusters 'run' and 'integTest' tasks.
+ * 1. Create and register a new test cluster for the 'run' task.
+ * 2. For the test clusters launched by 'run' and 'integTest' tasks, pre-install the bundled plugin ZIP.
  */
+val bundlePlugin = tasks.getByName<Zip>("bundlePlugin")
+val testClusters = extensions.getByName<NamedDomainObjectContainer<OpenSearchCluster>>(TestClustersPlugin.EXTENSION_NAME)
 
-val bundlePlugin: Zip = project.tasks.named<Zip>("bundlePlugin").get()
-val testClusters = project.extensions.getByName<NamedDomainObjectContainer<OpenSearchCluster>>(TestClustersPlugin.EXTENSION_NAME)
+listOf("runTask", "integTest").forEach { name -> testClusters.maybeCreate(name).plugin(bundlePlugin.archiveFile) }
 
-testClusters.create("runTask")
-testClusters["runTask"].plugin(bundlePlugin.archiveFile)
-testClusters["integTest"].plugin(bundlePlugin.archiveFile)
-
-// Installing the plugin on every test cluster is not recommended but can be done by uncommenting this line:
-// testClusters.forEach { cluster -> cluster.plugin(bundlePlugin.archiveFile) }
-
-project.tasks.named<RunTask>("run") {
+tasks.named<RunTask>("run") {
     useCluster(testClusters["runTask"])
 }
