@@ -17,7 +17,7 @@ object Versions {
     private const val version = "1.0.0"
 
     // Version of OpenSearch to build the plugin against
-    private const val openSearchVersion = "1.0.0-rc1"
+    private const val openSearchVersion = "1.1.0"
 
     fun getVersion(): String {
         return when(System.getProperty("build.snapshot", "true")) {

@@ -21,20 +21,8 @@ jobs:
         with:
           java-version: 14
 
-      # Build and publish artifacts to the local Maven repository until they are available on Maven central.
-      - name: Checkout OpenSearch
-        uses: actions/checkout@v2
-        with:
-          repository: opensearch-project/OpenSearch
-          path: OpenSearch
-          ref: '1.0'
-
-      - name: Build OpenSearch
-        working-directory: ./OpenSearch
-        run: ./gradlew publishToMavenLocal -Dbuild.version_qualifier=rc1 -Dbuild.snapshot=false
-
       - name: Checkout Plugin
         uses: actions/checkout@v2
 
       - name: Build Plugin
-        run: ./gradlew build -Dopensearch.version=1.0.0-rc1
+        run: ./gradlew build
